@@ -1,5 +1,6 @@
 package com.vcc.agile.project.mgmt.PowerNPride.controller;
 
+import com.vcc.agile.project.mgmt.PowerNPride.dto.PostResponse;
 import com.vcc.agile.project.mgmt.PowerNPride.dto.TopicDto;
 import com.vcc.agile.project.mgmt.PowerNPride.service.TopicService;
 import lombok.AllArgsConstructor;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.status;
+
 @RestController
-@RequestMapping("/api/topic")
+@RequestMapping("/api/topics")
 @AllArgsConstructor
 @Slf4j
 public class TopicController {
@@ -35,5 +38,11 @@ public class TopicController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(topicService.getTopic(id));
+    }
+
+    @GetMapping(params = "topicName")
+    public ResponseEntity<List<TopicDto>> getTopicsByTopicName(@RequestParam String topicName) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(topicService.getTopicByTopicName(topicName));
     }
 }

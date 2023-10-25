@@ -48,6 +48,13 @@ public class AuthService {
     @Transactional
     public void signup (RegisterRequest registerRequest)
     {
+
+        if (userNameExists(registerRequest.getUsername()))
+            throw new SpringPowerNPrideException("Username already exists");
+
+        if (emailExists(registerRequest.getEmail()))
+            throw new SpringPowerNPrideException("Email already exists");
+
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
@@ -69,6 +76,14 @@ public class AuthService {
                 "please click on the below url to activate your account : " +
                 "http://localhost:8080/api/auth/accountVerification/" + token));
                 */
+    }
+
+    private boolean userNameExists (String userName) {
+        return !userRepository.findByUsername(userName).isEmpty();
+    }
+
+    private boolean emailExists (String email) {
+        return !userRepository.findByEmail(email).isEmpty();
     }
 
     private String generateVerificationToken(User user) {

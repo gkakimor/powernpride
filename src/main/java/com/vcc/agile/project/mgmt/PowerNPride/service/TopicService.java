@@ -32,6 +32,8 @@ public class TopicService {
 
     @Transactional(readOnly = true)
     public List<TopicDto> getAll() {
+        List<Topic> topics = topicRepository.findAll();
+
         return topicRepository.findAll()
                 .stream()
                 .map(topicMapper::mapTopicToDto)
@@ -42,5 +44,13 @@ public class TopicService {
         Topic topic = topicRepository.findById(id)
                 .orElseThrow(() -> new SpringPowerNPrideException("No topic found with ID - " + id));
         return topicMapper.mapTopicToDto(topic);
+    }
+
+    @Transactional(readOnly = true)
+    public List<TopicDto> getTopicByTopicName(String topicName) {
+        return topicRepository.findByNameContains(topicName)
+                .stream()
+                .map(topicMapper::mapTopicToDto)
+                .collect(toList());
     }
 }

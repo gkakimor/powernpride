@@ -4,6 +4,7 @@ import com.vcc.agile.project.mgmt.PowerNPride.dto.AuthenticationResponse;
 import com.vcc.agile.project.mgmt.PowerNPride.dto.LoginRequest;
 import com.vcc.agile.project.mgmt.PowerNPride.dto.RefreshTokenRequest;
 import com.vcc.agile.project.mgmt.PowerNPride.dto.RegisterRequest;
+import com.vcc.agile.project.mgmt.PowerNPride.exceptions.SpringPowerNPrideException;
 import com.vcc.agile.project.mgmt.PowerNPride.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,8 +26,14 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest)
     {
-        authService.signup(registerRequest);
-        return new ResponseEntity<>("User Registration Successful", HttpStatus.OK);
+        try{
+            authService.signup(registerRequest);
+            return new ResponseEntity<>("User Registration Successful", HttpStatus.OK);
+        } catch (SpringPowerNPrideException spne){
+            return new ResponseEntity<>(spne.getMessage(), HttpStatus.CONFLICT);
+        }
+
+
     }
 
     @GetMapping("/accountVerification/{token}")
