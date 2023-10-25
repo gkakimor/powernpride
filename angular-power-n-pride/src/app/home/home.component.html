@@ -1,0 +1,22 @@
+<div class="reddit-body">
+  <div class="container">
+    <div class="row">
+      <hr />
+    <!-- Search form -->
+    <form class="form-inline d-flex justify-content-center md-form form-sm active-purple active-purple-2 mt-2">
+      <fa-icon class="fas fa-search" aria-hidden="true" [icon]="faSearch" ></fa-icon>
+      <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search Topic"
+        aria-label="Search">
+    </form>
+      <div class="col-md-9">
+        <app-post-tile [posts]="posts"></app-post-tile>
+      </div>
+      <div class="col-md-3">
+        <div *ngIf="isLoggedIn">
+          <app-side-bar></app-side-bar>
+        </div>
+        <app-topic-side-bar></app-topic-side-bar>
+      </div>
+    </div>
+  </div>
+</div>
