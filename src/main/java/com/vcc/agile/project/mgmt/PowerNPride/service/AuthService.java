@@ -83,12 +83,12 @@ public class AuthService {
         //sendMail(user.getEmail());
         String token = generateVerificationToken(user);
 
-        log.info("Activation token: http://localhost:8080/api/auth/accountVerification/" + token);
+        //log.info("Activation token: http://localhost:8080/api/auth/accountVerification/" + token);
 
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
                 user.getEmail(), "Thank you for signing up to Power N Pride! \n\n" +
                 "Please click on the link below to activate your account: \n" +
-                "http://localhost:8080/api/auth/accountVerification/" + token));
+                "https://power-n-pride-production.up.railway.app/api/auth/accountVerification/" + token));
 
     }
 
