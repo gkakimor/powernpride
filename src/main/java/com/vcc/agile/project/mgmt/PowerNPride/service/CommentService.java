@@ -44,7 +44,7 @@ public class CommentService {
 
     public List<CommentsDto> getAllCommentsForPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId.toString()));
-        return commentRepository.findByPost(post)
+        return commentRepository.findByPostOrderByCreatedDateDesc(post)
                 .stream()
                 .map(commentMapper::mapToDto).toList();
     }
@@ -52,11 +52,12 @@ public class CommentService {
     public List<CommentsDto> getAllCommentsForUser(String userName) {
         User user = userRepository.findByUsername(userName)
                 .orElseThrow(() -> new UsernameNotFoundException(userName));
-        return commentRepository.findAllByUser(user)
+        return commentRepository.findAllByUserOrderByCreatedDateDesc(user)
                 .stream()
                 .map(commentMapper::mapToDto)
                 .toList();
     }
+
 
     public boolean containsSwearWords(String comment) {
         if (comment.contains("shit")) {

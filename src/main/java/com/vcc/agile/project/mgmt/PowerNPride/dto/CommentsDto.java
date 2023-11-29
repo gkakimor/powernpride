@@ -17,4 +17,6 @@ public class CommentsDto {
     @NotBlank
     private String text;
     private String userName;
+
+    private String postName;
 }

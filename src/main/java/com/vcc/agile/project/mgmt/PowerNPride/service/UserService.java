@@ -31,6 +31,7 @@ public class UserService {
             throw new IllegalStateException("Password are not the same");
         }
 
+
         // update the password
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
 

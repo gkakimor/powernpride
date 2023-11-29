@@ -3,7 +3,9 @@ package com.vcc.agile.project.mgmt.PowerNPride.service;
 import com.vcc.agile.project.mgmt.PowerNPride.dto.TopicDto;
 import com.vcc.agile.project.mgmt.PowerNPride.exceptions.SpringPowerNPrideException;
 import com.vcc.agile.project.mgmt.PowerNPride.mapper.TopicMapper;
+import com.vcc.agile.project.mgmt.PowerNPride.model.Comment;
 import com.vcc.agile.project.mgmt.PowerNPride.model.Topic;
+import com.vcc.agile.project.mgmt.PowerNPride.repository.CommentRepository;
 import com.vcc.agile.project.mgmt.PowerNPride.repository.TopicRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,8 @@ public class TopicService {
     private final TopicRepository topicRepository;
     private final TopicMapper topicMapper;
 
+    private final CommentRepository commentRepository;
+
     @Transactional
     public TopicDto save (TopicDto topicDto)
     {
@@ -33,6 +37,8 @@ public class TopicService {
     @Transactional(readOnly = true)
     public List<TopicDto> getAll() {
         List<Topic> topics = topicRepository.findAll();
+
+        List<Comment> comments = commentRepository.findAllByTopic(3L);
 
         return topicRepository.findAll()
                 .stream()

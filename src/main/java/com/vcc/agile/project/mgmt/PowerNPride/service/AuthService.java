@@ -16,7 +16,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +33,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Properties;
+import javax.mail.*;
+import javax.mail.internet.*;
+import java.util.UUID;
+
 
 @Service
 @AllArgsConstructor
@@ -44,6 +52,11 @@ public class AuthService {
     private final MailService mailService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    private String generateVerificationToken() {
+        // You can use UUID or any other method to generate a unique token
+        return UUID.randomUUID().toString();
+    }
 
     @Transactional
     public void signup (RegisterRequest registerRequest)
@@ -61,21 +74,22 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         //user.setPassword(registerRequest.getPassword());
         user.setCreated(Instant.now());
-        //user.setEnabled(false);
-        user.setEnabled(true);
+        user.setEnabled(false);
+        //user.setEnabled(true);
         user.setRole(Role.USER);
 
         userRepository.save(user);
 
-        //String token = generateVerificationToken(user);
+        //sendMail(user.getEmail());
+        String token = generateVerificationToken(user);
 
-        //log.info("Activation token: http://localhost:8080/api/auth/accountVerification/" + token);
+        log.info("Activation token: http://localhost:8080/api/auth/accountVerification/" + token);
 
-        /*mailService.sendMail(new NotificationEmail("Please Activate your Account",
-                user.getEmail(), "Thank you for signing up to Spring Reddit, " +
-                "please click on the below url to activate your account : " +
+        mailService.sendMail(new NotificationEmail("Please Activate your Account",
+                user.getEmail(), "Thank you for signing up to Power N Pride! \n\n" +
+                "Please click on the link below to activate your account: \n" +
                 "http://localhost:8080/api/auth/accountVerification/" + token));
-                */
+
     }
 
     private boolean userNameExists (String userName) {

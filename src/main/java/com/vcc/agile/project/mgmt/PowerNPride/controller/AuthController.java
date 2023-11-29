@@ -32,15 +32,13 @@ public class AuthController {
         } catch (SpringPowerNPrideException spne){
             return new ResponseEntity<>(spne.getMessage(), HttpStatus.CONFLICT);
         }
-
-
     }
 
     @GetMapping("/accountVerification/{token}")
     public ResponseEntity<String> verifyAccount(@PathVariable String token)
     {
         authService.verifyAccount(token);
-        return new ResponseEntity<>("Account activated successfully", HttpStatus.OK);
+        return new ResponseEntity<>("<h1>Account activated successfully<h1>", HttpStatus.OK);
     }
 
     @PostMapping("/login")

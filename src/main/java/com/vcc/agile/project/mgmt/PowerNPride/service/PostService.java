@@ -14,6 +14,7 @@ import com.vcc.agile.project.mgmt.PowerNPride.repository.TopicRepository;
 import com.vcc.agile.project.mgmt.PowerNPride.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +50,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public List<PostResponse> getAllPosts() {
-        return postRepository.findAll()
+        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createDate"))
                 .stream()
                 .map(postMapper::mapToDto)
                 .collect(toList());
@@ -59,7 +60,7 @@ public class PostService {
     public List<PostResponse> getPostsByTopic(Long topicId) {
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new TopicNotFoundException(topicId.toString()));
-        List<Post> posts = postRepository.findAllByTopic(topic);
+        List<Post> posts = postRepository.findAllByTopicOrderByCreateDateDesc(topic);
         return posts.stream().map(postMapper::mapToDto).collect(toList());
     }
 
@@ -67,7 +68,7 @@ public class PostService {
     public List<PostResponse> getPostsByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
-        return postRepository.findByUser(user)
+        return postRepository.findByUserOrderByCreateDateDesc(user)
                 .stream()
                 .map(postMapper::mapToDto)
                 .collect(toList());

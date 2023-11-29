@@ -51,6 +51,7 @@ public class SecurityConfig{
                         .requestMatchers(HttpMethod.GET, "/api/posts/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/comments/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/dashboard/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/posts/").permitAll()
                         .requestMatchers("/v2/api-docs",
                                 "/configuration/ui",

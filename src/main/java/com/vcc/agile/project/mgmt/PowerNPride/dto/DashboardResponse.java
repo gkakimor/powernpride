@@ -6,14 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class TopicDto {
+public class DashboardResponse {
 
-    private Long id;
-    private String name;
-    private String description;
     private Integer numberOfPosts;
     private Integer numberOfComments;
+    private Integer numberOfUsers;
+    private Integer numberOfTopics;
 }
